@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MicroRabbit.Infrastructure.IoC;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 namespace MicroRabbit.Banking.Api
 {
@@ -28,11 +29,13 @@ namespace MicroRabbit.Banking.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(Startup));
             services.AddDbContext<BankingDbContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("BankingDbConnection"));
             });
+            services.AddSwaggerGen(c =>
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "Banking Microservice", Version = "v1"}));
+            services.AddMediatR(typeof(Startup));
             services.AddControllers();
             DependencyContainer.RegisterServices(services);
         }
@@ -42,9 +45,13 @@ namespace MicroRabbit.Banking.Api
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
+
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Banking Microservice v1"));
 
             app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
