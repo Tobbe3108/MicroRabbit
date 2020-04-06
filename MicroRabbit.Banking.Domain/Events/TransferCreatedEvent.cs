@@ -11,9 +11,9 @@ namespace MicroRabbit.Banking.Domain.Events
     {
         public Guid FromAccount { get; protected set; }
         public Guid ToAccount { get; protected set; }
-        public double Amount { get; protected set; }
+        public decimal Amount { get; protected set; }
 
-        public TransferCreatedEvent(Guid fromAccount, Guid toAccount, double amount)
+        public TransferCreatedEvent(Guid fromAccount, Guid toAccount, decimal amount)
         {
             FromAccount = fromAccount;
             ToAccount = toAccount;
