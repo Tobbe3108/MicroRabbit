@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MicroRabbit.Banking.Data.Repository
 {
-    internal class AccountRepository : IAccountRepository
+    public class AccountRepository : IAccountRepository
     {
         private readonly BankingDbContext _dbContext;
 
